@@ -61,7 +61,7 @@
   :type 'boolean
   :group 'lsp-biome)
 
-(defvar lsp-biome--bin-path nil)
+(defvar lsp-biome--bin-path "/run/current-system/sw/bin/biome")
 (defvar lsp-biome--activated-p nil)
 (defvar lsp-biome--orig-org-imports (symbol-function 'lsp-organize-imports))
 
@@ -83,18 +83,8 @@
 (defun lsp-biome--activate-p (filename &optional _)
   "Check if biome language server can/should start. Currently we only
 support projects that installed `biome'."
-  (when-let* ((wroot (lsp-workspace-root))
-              (broot (locate-dominating-file
-                      wroot
-                      "node_modules/@biomejs/biome/bin/biome"))
-              (bin (apply
-                    #'f-join
-                    `(,broot ,@(split-string
-                                "node_modules/@biomejs/biome/bin/biome" "/"))))
-              ((lsp-biome--has-config-file))
+  (when-let* (((lsp-biome--has-config-file))
               ((lsp-biome--file-can-be-activated filename)))
-    (setq lsp-biome--bin-path bin)
-    ;; Enploy `apheleia-mode' with a biome formatter if available
     t))
 
 (lsp-make-interactive-code-action biome-organize-imports
