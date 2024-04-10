@@ -95,12 +95,6 @@ support projects that installed `biome'."
               ((lsp-biome--file-can-be-activated filename)))
     (setq lsp-biome--bin-path bin)
     ;; Enploy `apheleia-mode' with a biome formatter if available
-    (when (bound-and-true-p apheleia-mode)
-      (unless (alist-get 'lsp-biome--formatter apheleia-formatters)
-        (push '(lsp-biome--formatter
-                . ("apheleia-npx" "biome" "format" "--stdin-file-path" filepath))
-              apheleia-formatters))
-      (setq-local apheleia-formatter '(lsp-biome--formatter)))
     t))
 
 (lsp-make-interactive-code-action biome-organize-imports
